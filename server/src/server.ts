@@ -2,15 +2,19 @@ import express from "express";
 import morgan from "morgan";
 import { AppDataSource } from "./data-source";
 import authRouter from "./routes/auth";
+import subRouter from "./routes/subs";
 import cors from "cors";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
 const app = express();
 
+app.use(express.static("public"));
 app.use(express.json()); //json 데이터 해석
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(
   cors({
@@ -21,7 +25,7 @@ app.use(
 
 app.get("/", (_, res) => res.send("running"));
 app.use("/api/auth", authRouter);
-app.use("/api/subs");
+app.use("/api/subs", subRouter);
 
 const port = process.env.PORT || 5501;
 app.listen(port, async () => {

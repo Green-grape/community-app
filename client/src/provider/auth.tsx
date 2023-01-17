@@ -1,14 +1,8 @@
-import { createContext, useContext, useReducer } from "react";
+import axios from "axios";
+import { createContext, useContext, useEffect, useReducer } from "react";
+import { User } from "../common/types";
 
 //이후 강의에서 createdAt, updatedAt을 사용하지 않으면 interface & server 코드 변경
-
-export interface User {
-  username: string;
-  email: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 interface State {
   authenticated: boolean;
   user: User | undefined;
@@ -28,7 +22,7 @@ const StateContext = createContext<State>({
 
 const DispatchContext = createContext<any>(null);
 
-export const useAuthContext = () => useContext(StateContext);
+export const useAuthState = () => useContext(StateContext);
 export const useAuthDispatch = () => useContext(DispatchContext);
 
 const reducer = (state: State, { type, payload }: AuthAction) => {
@@ -50,10 +44,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     authenticated: false,
     loading: true,
   });
-  console.log(state);
   const dispatch = (type: string, payload?: User) => {
     defaultDispatch({ type, payload });
   };
+  useEffect(() => {
+    async function loadUser() {
+      try {
+        const res = await axios.get("auth/check");
+        if (res.data) dispatch("LOGIN", res.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        dispatch("STOP_LOADING");
+      }
+    }
+    loadUser();
+  }, []);
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>{children}</StateContext.Provider>

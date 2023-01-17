@@ -5,6 +5,7 @@ import {
   MaxLength,
   MinLength,
 } from "class-validator";
+import { Exclude } from "class-transformer";
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -35,6 +36,7 @@ export class User extends BaseEntity {
 
   @MinLength(6, { message: "비밀번호는 6자리 이상이여야 합니다." })
   @Column()
+  @Exclude()
   password: string;
 
   @OneToMany(() => Post, (post) => post.user)
