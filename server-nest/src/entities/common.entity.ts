@@ -1,4 +1,4 @@
-import { instanceToPlain } from 'class-transformer';
+import { Exclude, instanceToPlain } from 'class-transformer';
 import {
   BaseEntity,
   CreateDateColumn,
@@ -9,12 +9,15 @@ import {
 
 @Entity()
 export default class CommonEntity extends BaseEntity {
+  @Exclude()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Exclude()
   @CreateDateColumn()
   createdAt: Date;
 
+  @Exclude()
   @UpdateDateColumn()
   updatedAt: Date;
 

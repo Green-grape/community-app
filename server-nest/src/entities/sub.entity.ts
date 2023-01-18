@@ -1,4 +1,4 @@
-import { Expose } from "class-transformer";
+import { Expose } from 'class-transformer';
 import {
   Column,
   Entity,
@@ -6,12 +6,12 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-} from "typeorm";
-import CommonEntity from "./common.entity";
-import { User } from "./user.entity";
-import { Post } from "./post.entity";
+} from 'typeorm';
+import CommonEntity from './common.entity';
+import { User } from './user.entity';
+import { Post } from './post.entity';
 
-@Entity("sub")
+@Entity('sub')
 export class Sub extends CommonEntity {
   @Index()
   @Column({ unique: true })
@@ -20,20 +20,20 @@ export class Sub extends CommonEntity {
   @Column()
   title: string;
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: 'text', nullable: true })
   description: string;
 
   @Column({ nullable: true })
   imageUrn: string;
 
   @Column({ nullable: true })
-  baseUrn: string;
+  bannerUrn: string;
 
   @Column()
   username: string;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: "username", referencedColumnName: "username" })
+  @JoinColumn({ name: 'username', referencedColumnName: 'username' })
   user: User;
 
   @OneToMany(() => Post, (post) => post.sub)
@@ -43,13 +43,13 @@ export class Sub extends CommonEntity {
   get imageUrl(): string {
     return this.imageUrn
       ? `${process.env.APP_URL}/images/${this.imageUrn}`
-      : "https://www.gravatar.com/avatar?d=mp&f=y";
+      : 'https://www.gravatar.com/avatar?d=mp&f=y';
   }
 
   @Expose()
-  get baseUrl(): string | undefined {
+  get bannerUrl(): string | undefined {
     return this.imageUrn
-      ? `${process.env.APP_URL}/images/${this.baseUrn}`
+      ? `${process.env.APP_URL}/images/${this.bannerUrn}`
       : undefined;
   }
 }

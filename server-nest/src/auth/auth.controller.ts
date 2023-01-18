@@ -1,4 +1,11 @@
-import { Controller, Post, Get, Res, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Res,
+  Body,
+  UseInterceptors,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { MyReq } from 'src/common/decorators/request.decorator';
 import { MyRes } from 'src/common/decorators/response.decorator';
@@ -6,19 +13,18 @@ import { AuthService } from './auth.service';
 import { CreateUserDTO } from './dto/create.user.dto';
 import { LoginUserDto } from './dto/login.user.dto';
 import * as cookie from 'cookie';
+import { UserInterceptor } from 'src/common/interceptors/user.interceptor';
+import { User } from 'src/entities/user.entity';
 
 //user 나중에 지우기
 
 @Controller('api/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
-  @Get('check')
-  checkValidToken(@MyReq('body') body) {
-    return body.user;
-  }
+
   @Post('register')
-  register(@MyReq('body') createUserDto: CreateUserDTO) {
-    return this.authService.addUser(createUserDto);
+  async register(@MyReq('body') createUserDto: CreateUserDTO) {
+    return await this.authService.addUser(createUserDto);
   }
   @Post('logout')
   logout(@Res({ passthrough: true }) res: Response) {
@@ -46,6 +52,11 @@ export class AuthController {
         path: '/',
       }),
     );
+    return user;
+  }
+
+  @Get('check')
+  checkValidToken(@MyReq('user') user) {
     return user;
   }
 }

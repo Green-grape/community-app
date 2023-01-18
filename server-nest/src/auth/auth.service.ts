@@ -23,9 +23,10 @@ export class AuthService {
   ) {}
   async addUser(createUserDto: CreateUserDTO) {
     const { email, username, password, passwordConfirm } = createUserDto;
+    //해당 계정을 생성할 수 있는지 확인
     let customError: any = {};
-    const usernameUser = this.userRepository.findOneBy({ username });
-    const emailUser = this.userRepository.findOneBy({ email });
+    const usernameUser = await this.userRepository.findOneBy({ username });
+    const emailUser = await this.userRepository.findOneBy({ email });
     if (usernameUser) customError.email = '이 이메일은 이미 사용되었습니다.';
     if (emailUser) customError.username = '이 사용자는 이미 사용되었습니다.';
     if (password !== passwordConfirm)
@@ -34,15 +35,20 @@ export class AuthService {
     if (Object.keys(customError).length > 0) {
       return new BadRequestException({ message: customError });
     }
+
+    //유저 생성
     const user = new User();
     user.email = email;
     user.username = username;
     user.password = password;
-    await user.save();
+    await this.userRepository.save(user);
+    const checkUser = await this.userRepository.findOneBy({ email });
+    console.log(checkUser);
     return user;
   }
   async login(loginUserDto: LoginUserDto) {
     const { username, password } = loginUserDto;
+    //로그인이 가능한지 확인
     let customError: any = {};
     const user = await this.userRepository.findOneBy({ username });
     if (user === null) {
@@ -53,6 +59,7 @@ export class AuthService {
       customError.password = '비밀번호가 일치하지 않습니다.';
       throw new UnauthorizedException({ message: customError });
     }
+    //jwt token 생성
     const token = jwt.sign(
       { username },
       this.configService.get<string>('JWT_SECRET'),

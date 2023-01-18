@@ -54,7 +54,7 @@ function SubPage() {
     formData.append("type", fileInputRef.current!.name);
     try {
       await axios.post(`/subs/${sub?.name}/upload`, formData, {
-        headers: { "Context-Type": "multipart/form-data" },
+        headers: { "Content-Type": "multipart/form-data;" },
       });
     } catch (e) {
       console.log(e);

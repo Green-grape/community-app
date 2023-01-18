@@ -20,14 +20,4 @@ export class CreateSubDto {
     }),
   })
   description: string;
-
-  @IsNotEmptyObject(
-    { nullable: false },
-    {
-      message: JSON.stringify({
-        user: '사용자가 존재하지 않습니다.',
-      }),
-    },
-  )
-  user: User;
 }

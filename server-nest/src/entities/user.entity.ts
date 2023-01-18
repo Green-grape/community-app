@@ -4,6 +4,7 @@ import {
   Length,
   MaxLength,
   MinLength,
+  ValidationArguments,
 } from 'class-validator';
 import {
   Entity,
@@ -15,7 +16,7 @@ import {
 } from 'typeorm';
 import { Vote } from './vote.entity';
 import { Post } from './post.entity';
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 import CommonEntity from './common.entity';
 import { Exclude } from 'class-transformer';
 
@@ -29,14 +30,17 @@ export class User extends CommonEntity {
   email: string;
 
   @Index()
-  @MinLength(2, { message: '사용자 이름은 3자 이상이여얗 합니다.' })
+  @MinLength(2, {
+    message: (args: ValidationArguments) => {
+      console.log(args.value);
+      return '사용자 이름은 3자 이상이여야 합니다.';
+    },
+  })
   @MaxLength(32)
   @Column({ unique: true })
   username: string;
 
   @Column()
-  @MinLength(6, { message: '비밀번호는 6자리 이상이여야 합니다.' })
-  @MaxLength(32)
   @Exclude()
   password: string;
 
