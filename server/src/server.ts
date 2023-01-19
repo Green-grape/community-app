@@ -3,6 +3,7 @@ import morgan from "morgan";
 import { AppDataSource } from "./data-source";
 import authRouter from "./routes/auth";
 import subRouter from "./routes/subs";
+import postRouter from "./routes/post";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -26,6 +27,7 @@ app.use(
 app.get("/", (_, res) => res.send("running"));
 app.use("/api/auth", authRouter);
 app.use("/api/subs", subRouter);
+app.use("/api/posts", postRouter);
 
 const port = process.env.PORT || 5501;
 app.listen(port, async () => {

@@ -15,6 +15,8 @@ export class SubService {
   constructor(
     @InjectRepository(Sub)
     private subRepository: Repository<Sub>,
+    @InjectRepository(Post)
+    private postRepository: Repository<Post>,
     private config: ConfigService,
   ) {}
   async createSub(createSubDto: CreateSubDto, user: User) {
@@ -64,6 +66,12 @@ export class SubService {
   async getSub(getSubDto: GetSubDto) {
     const { name } = getSubDto;
     const sub = await this.subRepository.findOneByOrFail({ name });
+    const posts = await this.postRepository.find({
+      where: { subName: sub.name },
+      order: { createdAt: 'DESC' },
+      relations: ['comments', 'votes'],
+    });
+    sub.posts = posts;
     return sub;
   }
   async uploadImage(type: string, sub: Sub, file: Express.Multer.File) {

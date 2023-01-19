@@ -69,8 +69,14 @@ const topSubs = async (req: Request, res: Response) => {
 
 const getSub = async (req: Request, res: Response) => {
   try {
-    const { name } = req.params;
-    const sub = await Sub.findOneByOrFail({ name });
+    const { subname } = req.params;
+    const sub = await Sub.findOneByOrFail({ name: subname });
+    const posts = await Post.find({
+      where: { subName: subname },
+      order: { createdAt: "DESC" },
+      relations: ["comments", "votes"], //relations check
+    });
+    sub.posts = posts;
     return res.json(sub);
   } catch (error) {
     return res.json(404).json({ error: "sub is not found" });
@@ -152,7 +158,7 @@ const uploadSubImage = async (req: Request, res: Response) => {
 
 router.post("/", userMiddleware, authMiddleware, createSub);
 router.get("/topsubs", topSubs);
-router.get("/:name", getSub);
+router.get("/:subname", getSub);
 router.post(
   "/:subname/upload",
   userMiddleware,

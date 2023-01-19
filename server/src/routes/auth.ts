@@ -1,15 +1,11 @@
 import { validate, ValidationError } from "class-validator";
-import e, { NextFunction, Request, response, Response, Router } from "express";
+import e, { Request, Response, Router } from "express";
 import { User } from "../entities/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookie from "cookie";
-import { Sub } from "../entities/Sub";
 import authMiddleware from "../middlewares/auth";
 import userMiddleware from "../middlewares/user";
-import multer from "multer";
-import { v4 as uuid } from "uuid";
-import path from "path";
 
 //To Do: Test
 const router = Router();

@@ -18,6 +18,7 @@ import { User } from './entities/user.entity';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { UserInterceptor } from './common/interceptors/user.interceptor';
 import { join } from 'path';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { join } from 'path';
     }),
     AuthModule,
     SubModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],

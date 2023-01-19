@@ -11,6 +11,7 @@ import useSWR, { mutate } from "swr";
 import { Sub } from "../../common/types";
 import Image from "next/image";
 import { useAuthState } from "../../provider/auth";
+import Sidebar from "../../components/Sidebar";
 
 function SubPage() {
   const [ownSub, setOwnSub] = useState(false);
@@ -123,7 +124,10 @@ function SubPage() {
               </div>
             </div>
             {/*Posts & Sidebar */}
-            <div className="flex max-w-5xl px-4 pt-5 mx-auto"></div>
+            <div className="flex max-w-5xl px-4 pt-5 mx-auto">
+              <div className="w-full md:mr-3 md:w-8/12"></div>
+              <Sidebar sub={sub} />
+            </div>
           </div>
         </Fragment>
       )}
