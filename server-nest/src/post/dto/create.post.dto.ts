@@ -1,4 +1,4 @@
-import { IsNotEmpty, ValidationArguments } from 'class-validator';
+import { IsNotEmpty, IsString, ValidationArguments } from 'class-validator';
 
 export class CreatePostDto {
   @IsNotEmpty({
@@ -11,6 +11,7 @@ export class CreatePostDto {
   })
   title: string;
 
+  @IsString()
   description: string;
 
   @IsNotEmpty({

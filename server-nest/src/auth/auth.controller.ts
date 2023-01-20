@@ -56,7 +56,8 @@ export class AuthController {
   }
 
   @Get('check')
-  checkValidToken(@MyReq('user') user) {
+  @UseInterceptors(UserInterceptor)
+  checkValidToken(@MyReq('user') user:User | undefined) {
     return user;
   }
 }

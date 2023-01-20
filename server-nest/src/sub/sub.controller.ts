@@ -23,12 +23,13 @@ import { v4 as uuid } from 'uuid';
 import * as path from 'path';
 import { SubInterceptor } from 'src/common/interceptors/sub.interceptor';
 import { Sub } from 'src/entities/sub.entity';
+import { AuthInterceptor } from 'src/common/interceptors/auth.interceptor';
 
 @Controller('api/subs')
 export class SubController {
   constructor(private subService: SubService) {}
   @Post()
-  @UseInterceptors(UserInterceptor)
+  @UseInterceptors(UserInterceptor,AuthInterceptor)
   createSub(
     @MyReq('body') createSubDto: CreateSubDto,
     @MyReq('user') user: User,
@@ -43,8 +44,11 @@ export class SubController {
   getSub(@MyReq('params') getSubDto: GetSubDto) {
     return this.subService.getSub(getSubDto);
   }
+  //dto 쓰면 에러발생, express 의존
+  @Post('/:subname/upload')
   @UseInterceptors(
     UserInterceptor,
+    AuthInterceptor,
     SubInterceptor,
     FileInterceptor('file', {
       dest: 'public/images',
@@ -57,10 +61,8 @@ export class SubController {
       }),
     }),
   )
-  //dto 쓰면 에러발생
-  @Post('/:subname/upload')
   uploadImage(
-    @MyReq('sub') sub,
+    @MyReq('sub') sub:Sub,
     @MyReq('body') body,
     @UploadedFile(
       new ParseFilePipe({

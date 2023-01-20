@@ -6,6 +6,8 @@ export interface User {
 }
 
 export interface Post {
+  createdAt: string;
+  updatedAt: string;
   identifier: string;
   title: string;
   slug: string;
@@ -15,7 +17,7 @@ export interface Post {
   sub?: Sub;
 
   //expose
-  url: number;
+  url: string;
   userVote?: number;
   voteScore?: number;
   commentcount?: number;

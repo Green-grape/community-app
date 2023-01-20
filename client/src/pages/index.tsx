@@ -10,19 +10,18 @@ import { useAuthState } from "../provider/auth";
 
 export default function Home() {
   const { authenticated } = useAuthState();
-  const fetcher = async (url: string) =>
-    await axios.get(url).then((res) => res.data);
-  const address = "http://nicecode.cf:5501/api/subs/topsubs";
-  const { data: topsubs } = useSWR<Sub[]>(address, fetcher);
+  const address = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/subs/topsubs`;
+  const { data: topsubs } = useSWR<Sub[]>(address);
+  console.log(topsubs);
   return (
-    <div className="flex max-w-5xl px-4 pt-16 mx-auth">
+    <div className="top flex max-w-5xl px-4 mx-auth">
       {/*포스트 리스트*/}
       <div className="w-full md:mr-3 md:w-8/12"></div>
       {/*사이드바 */}
       <div className="hidden w-4/12 ml-3 md:block">
         <div className="bg-white border rounded">
           <div className="p-4 border-b">
-            <p className="text-lg font-semibold text-center">상위 커뮤니티</p>
+            <p className="text-black text-lg font-semibold text-center">상위 커뮤니티</p>
           </div>
           {/*커뮤니티 리스트 */}
           <div>

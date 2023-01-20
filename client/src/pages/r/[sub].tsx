@@ -16,15 +16,6 @@ import Sidebar from "../../components/Sidebar";
 function SubPage() {
   const [ownSub, setOwnSub] = useState(false);
   const { authenticated, user } = useAuthState();
-  const fetcher = async (url: string) => {
-    try {
-      const res = await axios.get(url);
-      return res.data;
-    } catch (e: any) {
-      console.log(e);
-      throw e.response.data;
-    }
-  };
   const router = useRouter();
   const subName = router.query.sub;
   const {
@@ -32,7 +23,7 @@ function SubPage() {
     error,
     isLoading,
     isValidating,
-  } = useSWR<Sub>(subName ? `/subs/${subName}` : null, fetcher);
+  } = useSWR<Sub>(subName ? `/subs/${subName}` : null);
 
   useEffect(() => {
     if (authenticated && user?.username == sub?.username) setOwnSub(true);
@@ -67,7 +58,7 @@ function SubPage() {
     <div>
       {sub && (
         <Fragment>
-          <div className="">
+          <div className="top">
             <input
               type="file"
               hidden={true}
@@ -78,7 +69,7 @@ function SubPage() {
             <div className="bg-gray-400">
               {sub.bannerUrn ? (
                 <div
-                  className={`h-56 bg-no-repeat bg-cover bg-center ${
+                  className={`h-40 bg-no-repeat bg-cover bg-center ${
                     ownSub ? "cursor-pointer" : ""
                   }`}
                   style={{
@@ -88,7 +79,7 @@ function SubPage() {
                 ></div>
               ) : (
                 <div
-                  className={`h-56 bg-gray-400 ${
+                  className={`h-40 bg-gray-400 ${
                     ownSub ? "cursor-pointer" : ""
                   }`}
                   onClick={() => openFileInput("banner")}
