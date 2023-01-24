@@ -41,8 +41,9 @@ export class SubController {
     return this.subService.getSubList();
   }
   @Get('/:name')
-  getSub(@MyReq('params') getSubDto: GetSubDto) {
-    return this.subService.getSub(getSubDto);
+  @UseInterceptors(UserInterceptor)
+  getSub(@MyReq('params') getSubDto: GetSubDto, @MyReq('user') user:User | undefined) {
+    return this.subService.getSub(getSubDto,user);
   }
   //dto 쓰면 에러발생, express 의존
   @Post('/:subname/upload')

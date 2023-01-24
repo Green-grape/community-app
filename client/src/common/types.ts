@@ -20,7 +20,7 @@ export interface Post {
   url: string;
   userVote?: number;
   voteScore?: number;
-  commentcount?: number;
+  commentCount?: number;
 }
 
 export interface Sub {
@@ -47,6 +47,6 @@ export interface Comment {
   updatedAt: string;
   post: Post;
 
-  userVote: string;
-  voteScore: string;
+  userVote: number;
+  voteScore: number;
 }

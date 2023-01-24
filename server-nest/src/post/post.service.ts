@@ -35,11 +35,11 @@ export class PostService {
 
   async getPost(getPostDto:GetPostDto, user:User | undefined){
     const {identifier, slug}=getPostDto;
-    console.log(identifier,slug);
     const post=await this.postRepository.findOneOrFail({
         where:{identifier, slug},
         relations:["sub","votes"]
     })
+    post.votes=post.votes.filter(vote=>vote.commentId===null);
     if(user){
       post.setUserVote(user);
     }
@@ -58,5 +58,16 @@ export class PostService {
     newComment.post=post;
     await this.commentRepository.save(newComment);
     return newComment;
+  }
+
+  async getPostComment(getPostDto:GetPostDto, user:User | undefined){
+    const {identifier,slug}=getPostDto;
+    const post=await this.postRepository.findOneByOrFail({identifier,slug});
+    const comments=await this.commentRepository.find({where:{postId:post.id},order:
+      {createdAt:"DESC"},relations:["votes"]});
+    if(user){
+      comments.forEach(comment=>comment.setUserVote(user));
+    }
+    return comments;
   }
 }

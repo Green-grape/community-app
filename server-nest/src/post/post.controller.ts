@@ -29,5 +29,9 @@ export class PostController {
   async createPostComment(@MyReq('params') getPostDto:GetPostDto, @MyReq('body') createCommentDto:CreateCommentDto, @MyReq('user') user:User){
     return this.postSubvice.createPostComment(getPostDto, createCommentDto, user);
   }
-  
+  @Get("/:identifier/:slug/comments")
+  @UseInterceptors(UserInterceptor)
+  async getPostComment(@MyReq('params') getPostDto:GetPostDto, @MyReq('user') user:User | undefined){
+    return this.postSubvice.getPostComment(getPostDto, user);
+  }
 }

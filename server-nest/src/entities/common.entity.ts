@@ -1,4 +1,5 @@
 import { Exclude, instanceToPlain } from 'class-transformer';
+import { IsNotEmpty } from 'class-validator';
 import {
   BaseEntity,
   CreateDateColumn,
@@ -13,11 +14,11 @@ export default class CommonEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Exclude()
+  @IsNotEmpty()
   @CreateDateColumn()
   createdAt: Date;
 
-  @Exclude()
+  @IsNotEmpty()
   @UpdateDateColumn()
   updatedAt: Date;
 

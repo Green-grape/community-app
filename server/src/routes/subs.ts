@@ -76,6 +76,9 @@ const getSub = async (req: Request, res: Response) => {
       order: { createdAt: "DESC" },
       relations: ["comments", "votes"], //relations check
     });
+    if(res.locals.user){
+      posts.forEach(post=>post.setUserVote(res.locals.user));
+    }
     sub.posts = posts;
     return res.json(sub);
   } catch (error) {
@@ -158,7 +161,7 @@ const uploadSubImage = async (req: Request, res: Response) => {
 
 router.post("/", userMiddleware, authMiddleware, createSub);
 router.get("/topsubs", topSubs);
-router.get("/:subname", getSub);
+router.get("/:subname", userMiddleware, getSub);
 router.post(
   "/:subname/upload",
   userMiddleware,

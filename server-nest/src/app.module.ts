@@ -19,6 +19,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { UserInterceptor } from './common/interceptors/user.interceptor';
 import { join } from 'path';
 import { PostModule } from './post/post.module';
+import { VoteModule } from './vote/vote.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { PostModule } from './post/post.module';
     AuthModule,
     SubModule,
     PostModule,
+    VoteModule,
   ],
   controllers: [AppController],
   providers: [AppService],

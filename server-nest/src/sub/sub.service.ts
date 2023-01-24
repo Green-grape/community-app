@@ -63,7 +63,7 @@ export class SubService {
     return subs;
   }
 
-  async getSub(getSubDto: GetSubDto) {
+  async getSub(getSubDto: GetSubDto, user:User | undefined) {
     const { name } = getSubDto;
     const sub = await this.subRepository.findOneByOrFail({ name });
     const posts = await this.postRepository.find({
@@ -71,6 +71,9 @@ export class SubService {
       order: { createdAt: 'DESC' },
       relations: ['comments', 'votes'],
     });
+    if(user){
+      posts.forEach(post=>post.setUserVote(user));
+    }
     sub.posts = posts;
     return sub;
   }

@@ -12,6 +12,8 @@ import { Sub } from "../../common/types";
 import Image from "next/image";
 import { useAuthState } from "../../provider/auth";
 import Sidebar from "../../components/Sidebar";
+import { Post } from "../../common/types";
+import PostCard from "../../components/PostCard";
 
 function SubPage() {
   const [ownSub, setOwnSub] = useState(false);
@@ -21,9 +23,18 @@ function SubPage() {
   const {
     data: sub,
     error,
-    isLoading,
-    isValidating,
+    mutate:mutateSub
   } = useSWR<Sub>(subName ? `/subs/${subName}` : null);
+  let renderPosts;
+  if(!sub){
+    renderPosts=<p className="text-lg text-center">로딩중</p>
+  }else if(sub.posts.length==0){
+    renderPosts=<p className="text-lg text-center">아직 작성된 포스트가 없습니다.</p>
+  }else{
+    renderPosts=sub.posts.map((post:Post)=>{
+      return <PostCard key={post.identifier} post={post} mutate={mutateSub}></PostCard>
+    })
+  }
 
   useEffect(() => {
     if (authenticated && user?.username == sub?.username) setOwnSub(true);
@@ -52,8 +63,6 @@ function SubPage() {
       console.log(e);
     }
   };
-  if (isLoading) return <div>isLoading</div>;
-  if (isValidating) return <div>isValidating</div>;
   return (
     <div>
       {sub && (
@@ -114,9 +123,9 @@ function SubPage() {
                 </div>
               </div>
             </div>
-            {/*Posts & Sidebar */}
+            {/*포스트 & 사이드바 */}
             <div className="flex max-w-5xl px-4 pt-5 mx-auto">
-              <div className="w-full md:mr-3 md:w-8/12"></div>
+              <div className="w-full md:mr-3 md:w-8/12">{renderPosts}</div>
               <Sidebar sub={sub} />
             </div>
           </div>

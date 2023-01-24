@@ -38,6 +38,7 @@ const getPost=async (req:Request,res:Response)=>{
       },
       relations:["sub", "votes"] //left join
     });
+    post.votes=post.votes.filter(vote=>vote.commentId===null);
     if(res.locals.user){
       post.setUserVote(res.locals.user);
     }
@@ -69,8 +70,29 @@ const createPostComment=async (req:Request, res:Response)=>{
   }
 }
 
+const getPostComment=async(req:Request, res:Response)=>{
+  const {identifier, slug}=req.params;
+  try{
+    const post=await Post.findOneByOrFail({identifier,slug});
+    const comments=await Comment.find({
+      where:{postId:post.id},
+      order:{createdAt:"DESC"},
+      relations:["votes"]
+    })
+    if(res.locals.user){
+      comments.forEach(comment=>comment.setUserVote(res.locals.user));
+    }
+    console.log
+    return res.json(comments);
+  }catch(error){
+    console.error(error);
+    return res.status(500).json({error:"댓글을 가져오는데 실패했습니다."})
+  }
+}
+
 export default router;
 
 router.post("/:identifier/:slug/comments", userMiddleware, authMiddleware, createPostComment);
+router.get("/:identifier/:slug/comments", userMiddleware, getPostComment);
 router.get("/:identifier/:slug", userMiddleware,getPost);
 router.post("/", userMiddleware, authMiddleware, createPost);
