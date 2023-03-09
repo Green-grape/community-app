@@ -11,8 +11,10 @@ import { Sub } from '../common/types';
 
 
 interface postCardProps{
+    id?:string;
     post:Post
-    mutate:()=>void
+    mutate?:()=>void
+    subMutate?:()=>void
 }
 
 function PostCard({post:{createdAt,
@@ -27,7 +29,7 @@ function PostCard({post:{createdAt,
     url,
     userVote,
     voteScore,
-    commentCount},mutate}:postCardProps) {
+    commentCount},mutate,subMutate,id}:postCardProps) {
         const router=useRouter();
         const {authenticated,user}=useAuthState();
         const vote=async (value:number)=>{
@@ -37,16 +39,27 @@ function PostCard({post:{createdAt,
             }
             try{
                 await axios.post(`/votes`,{identifier,slug,value}); 
-                mutate();
+                if(mutate) mutate();
+                if(subMutate) subMutate();
             }catch(error){
                 console.error(error);
             }
         };
   return (
-    <div className='flex'>
+    <div className='flex bg-white rounded mb-5' id={id}>
         <VoteArrows voteFunction={vote} userVote={userVote} voteScore={voteScore}></VoteArrows>
         <div className='py-2 pr-2'>
                 <header className='flex items-center'>
+                    {!subMutate && (
+                    <div className='flex items-center'>
+                      <Link href={`/r/${subName}`}>
+                        <img src={sub?.imageUrl} alt="sub" className='rounded-full cursor-pointer' width={12} height={12}></img>
+                      </Link>
+                      <Link href={`/r/${subName}`} className="ml-2 text-xs font-bold cursor-pointer">
+                        /r/{subName}
+                      </Link>
+                      <span className='mx-1 text-xs text-gray-400'>·</span>
+                    </div>)}
                   <p className='text-xs text-gray-400'>
                     Posted by
                     <Link className='mx-1 hover:underline' href={`/u/${username}`}>

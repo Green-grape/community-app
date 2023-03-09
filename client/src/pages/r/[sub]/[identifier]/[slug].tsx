@@ -47,9 +47,9 @@ function PostPage() {
       }
     }
   return (
-    <div className='top flex max-w-5xl px-4 mx-auto'>
+    <div className='top flex max-w-5xl pl-4 mx-auto'>
       <div className='w-full md:mr-3 md:w-8/12'>
-        <div className='bg-white rounded'>
+        <div className='bg-white rounded pb-1'>
           {post && (
           <>
             <div className='flex'>
@@ -84,7 +84,7 @@ function PostPage() {
             {/* 댓글 작성 구간 */}
               <div className='pr-6 mb-4'>
                 {authenticated ? (
-                  <div className='ml-10'>
+                  <div className='ml-10 mb-2'>
                     <p className='mb-1 text-xs'>
                       <Link className='font-semibold text-blue-500' href={`/u/${user?.username}`}>{user?.username}</Link>
                       {" "}으로 댓글 작성
@@ -119,7 +119,7 @@ function PostPage() {
                   {/*좋아요,싫어요 기능*/}
                   <VoteArrows voteFunction={(n:number)=>vote(n,comment)} userVote={comment.userVote} voteScore={comment.voteScore}></VoteArrows>
                   <div className='py-2 pr-2'>
-                    <p className='mb-1 text-xs leading-none'>
+                    <div className='mb-1 text-xs leading-none'>
                       <Link className="mr-1 font-bold hover:underline" href={`/u${comment.username}`}>{comment.username}</Link>
                       <span className='text-gray-600'>
                         {`${comment.voteScore}
@@ -129,7 +129,7 @@ function PostPage() {
                       <p className='text-lg mt-2'>
                         {comment.body}
                       </p>
-                    </p>
+                    </div>
                   </div>
                 </div>
                 ))}

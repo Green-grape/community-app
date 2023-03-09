@@ -23,7 +23,7 @@ function SubPage() {
   const {
     data: sub,
     error,
-    mutate:mutateSub
+    mutate:subMutate
   } = useSWR<Sub>(subName ? `/subs/${subName}` : null);
   let renderPosts;
   if(!sub){
@@ -32,7 +32,7 @@ function SubPage() {
     renderPosts=<p className="text-lg text-center">아직 작성된 포스트가 없습니다.</p>
   }else{
     renderPosts=sub.posts.map((post:Post)=>{
-      return <PostCard key={post.identifier} post={post} mutate={mutateSub}></PostCard>
+      return <PostCard key={post.identifier} post={post} subMutate={subMutate}></PostCard>
     })
   }
 

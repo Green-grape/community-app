@@ -4,7 +4,8 @@ import { AppDataSource } from "./data-source";
 import authRouter from "./routes/auth";
 import subRouter from "./routes/subs";
 import postRouter from "./routes/post";
-import voteRouter from "./routes/vote"
+import voteRouter from "./routes/vote";
+import userRouter from "./routes/user";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -30,6 +31,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/subs", subRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/votes", voteRouter);
+app.use("/api/users", userRouter);
 
 const port = process.env.PORT || 5501;
 app.listen(port, async () => {

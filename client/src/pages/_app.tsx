@@ -31,7 +31,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <SWRConfig value={{fetcher}}>
       <AuthProvider>
         {!isAuthRoute && <NavBar />}
-        <Component {...pageProps} />;
+        <div className={isAuthRoute ? "":"pt-12 bg-gray-400 min-h-screen"}>
+          <Component {...pageProps} />;
+        </div>
       </AuthProvider>
     </SWRConfig>
     </>

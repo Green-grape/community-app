@@ -19,6 +19,7 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       validateCustomDecorators: true,
+      transform:true
     }),
   );
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));

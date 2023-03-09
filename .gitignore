@@ -1,0 +1,92 @@
+data
+.env
+docker-compose.yml
+
+#client
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/client/node_modules
+/client/.pnp
+/client/.pnp.js
+
+# testing
+/client/coverage
+
+# next.js
+/client/.next/
+/client/out/
+
+# production
+/client/build
+
+# misc
+/client/.DS_Store
+/client/*.pem
+
+# debug
+/client/npm-debug.log*
+/client/yarn-debug.log*
+/client/yarn-error.log*
+/client/.pnpm-debug.log*
+
+# local env files
+/client/.env
+/client/.env*.local
+
+# vercel
+/client/.vercel
+
+# typescript
+/client/*.tsbuildinfo
+/client/next-env.d.ts
+
+#server
+/server/.idea/
+/server/.vscode/
+/server/node_modules/
+/server/build/
+/server/tmp/
+/server/temp/
+/server/.env
+
+#server-nest
+# compiled output
+/server-nest/dist
+/server-nest/node_modules
+
+# Logs
+/server-nest/logs
+/server-nest/*.log
+/server-nest/npm-debug.log*
+/server-nest/pnpm-debug.log*
+/server-nest/yarn-debug.log*
+/server-nest/yarn-error.log*
+/server-nest/lerna-debug.log*
+
+# OS
+/server-nest/.DS_Store
+
+# Tests
+/server-nest/coverage
+/server-nest/.nyc_output
+
+# IDEs and editors
+/server-nest/.idea
+/server-nest/.project
+/server-nest/.classpath
+/server-nest/.c9/
+/server-nest/*.launch
+/server-nest/.settings/
+/server-nest/*.sublime-workspace
+
+# IDE - VSCode
+/server-nest/.vscode/*
+/server-nest/!.vscode/settings.json
+/server-nest/!.vscode/tasks.json
+/server-nest/!.vscode/launch.json
+/server-nest/!.vscode/extensions.json
+
+#env
+/server-nest/.env
+/server-nest/src/config

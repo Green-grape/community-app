@@ -20,6 +20,7 @@ import { UserInterceptor } from './common/interceptors/user.interceptor';
 import { join } from 'path';
 import { PostModule } from './post/post.module';
 import { VoteModule } from './vote/vote.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { VoteModule } from './vote/vote.module';
     SubModule,
     PostModule,
     VoteModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

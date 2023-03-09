@@ -50,3 +50,8 @@ export interface Comment {
   userVote: number;
   voteScore: number;
 }
+
+export interface OwnerData{
+  type:string;
+  data:Post | Comment;
+};

@@ -7,6 +7,7 @@ import { PostService } from './post.service';
 import { AuthInterceptor } from 'src/common/interceptors/auth.interceptor';
 import { GetPostDto } from './dto/get.post.dto';
 import { CreateCommentDto } from './dto/create.comment.dto';
+import { GetPostsDto } from './dto/get.posts.dto';
 
 @Controller('api/posts')
 export class PostController {
@@ -19,9 +20,14 @@ export class PostController {
   ) {
     return this.postSubvice.createPost(createPostDto, user);
   }
+  @Get()
+  @UseInterceptors(UserInterceptor)
+  getPosts(@MyReq('query') getPostsDto:GetPostsDto, @MyReq('user') user){
+    return this.postSubvice.getPosts(getPostsDto,user);
+  }
   @Get("/:identifier/:slug")
   @UseInterceptors(UserInterceptor)
-  async getPost(@MyReq('params') getPostDto:GetPostDto, @MyReq('user') user:User | undefined){
+  async getPost(@MyReq('params') getPostDto:GetPostDto, @MyReq('user') user){
     return this.postSubvice.getPost(getPostDto,user);
   }
   @Post("/:identifier/:slug/comments")
@@ -31,7 +37,7 @@ export class PostController {
   }
   @Get("/:identifier/:slug/comments")
   @UseInterceptors(UserInterceptor)
-  async getPostComment(@MyReq('params') getPostDto:GetPostDto, @MyReq('user') user:User | undefined){
+  async getPostComment(@MyReq('params') getPostDto:GetPostDto, @MyReq('user') user){
     return this.postSubvice.getPostComment(getPostDto, user);
   }
 }

@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetPostDto } from './dto/get.post.dto';
 import { CreateCommentDto } from './dto/create.comment.dto';
+import { GetPostsDto } from './dto/get.posts.dto';
 
 @Injectable()
 export class PostService {
@@ -31,6 +32,20 @@ export class PostService {
     post.user = user;
     await this.postRepository.save(post);
     return post;
+  }
+
+  async getPosts(getPostsDto:GetPostsDto, user:User | undefined){
+    const {page, limit}=getPostsDto;
+    const posts=await this.postRepository.find({
+      order:{createdAt:"DESC"},
+      relations:["sub", "votes", "comments"],
+      skip:page*limit,
+      take:limit
+    })
+    if(user){
+      posts.forEach(post=>post.setUserVote(user));
+    }
+    return posts;
   }
 
   async getPost(getPostDto:GetPostDto, user:User | undefined){

@@ -40,9 +40,10 @@ export class SubController {
   getSubList() {
     return this.subService.getSubList();
   }
-  @Get('/:name')
+
   @UseInterceptors(UserInterceptor)
-  getSub(@MyReq('params') getSubDto: GetSubDto, @MyReq('user') user:User | undefined) {
+  @Get('/:name')
+  getSub(@MyReq('params') getSubDto: GetSubDto, @MyReq('user') user) {
     return this.subService.getSub(getSubDto,user);
   }
   //dto 쓰면 에러발생, express 의존

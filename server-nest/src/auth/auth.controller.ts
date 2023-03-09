@@ -15,6 +15,7 @@ import { LoginUserDto } from './dto/login.user.dto';
 import * as cookie from 'cookie';
 import { UserInterceptor } from 'src/common/interceptors/user.interceptor';
 import { User } from 'src/entities/user.entity';
+import { GetUserDto } from 'src/common/dto/get.user.dto';
 
 //user 나중에 지우기
 
@@ -57,7 +58,7 @@ export class AuthController {
 
   @Get('check')
   @UseInterceptors(UserInterceptor)
-  checkValidToken(@MyReq('user') user:User | undefined) {
+  checkValidToken(@MyReq('user') user) {
     return user;
   }
 }

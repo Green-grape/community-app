@@ -90,9 +90,29 @@ const getPostComment=async(req:Request, res:Response)=>{
   }
 }
 
+const getPosts=async (req:Request, res:Response)=>{
+  const curPage=(req.query.page || 0) as number;
+  const perPage=(req.query.limit || 10) as number;
+  try{
+    const posts=await Post.find({
+      order:{createdAt:"DESC"},
+      relations:["sub", "votes", "comments"],
+      skip: curPage*perPage,
+      take:perPage
+    })
+    if(res.locals.user){
+      posts.forEach(post=>post.setUserVote(res.locals.user));
+    }
+    return res.json(posts);
+  }catch(error){
+    return res.status(500).json({error:"포스트들을 가져오는데 실패했습니다."})
+  }
+}
+
 export default router;
 
 router.post("/:identifier/:slug/comments", userMiddleware, authMiddleware, createPostComment);
 router.get("/:identifier/:slug/comments", userMiddleware, getPostComment);
 router.get("/:identifier/:slug", userMiddleware,getPost);
 router.post("/", userMiddleware, authMiddleware, createPost);
+router.get("/", userMiddleware, getPosts);

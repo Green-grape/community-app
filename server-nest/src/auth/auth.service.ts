@@ -43,7 +43,6 @@ export class AuthService {
     user.password = password;
     await this.userRepository.save(user);
     const checkUser = await this.userRepository.findOneBy({ email });
-    console.log(checkUser);
     return user;
   }
   async login(loginUserDto: LoginUserDto) {
